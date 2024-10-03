@@ -16,10 +16,10 @@ class Sb < Formula
     STORE_API_URL = ENV['HOMEBREW_SYNKBRIDGE_STORE_API_URL'] || "https://api.store.synkbridge.com/v1"
     if Hardware::CPU.intel?
       url "#{STORE_API_URL}/bundler-cli-repository/homebrew/#{ENV['HOMEBREW_SYNKBRIDGE_STORE_KEY']}/sb/0.9.21/amd64", using: BundlerCLIDownloadStrategy
-      sha256 "e56e52bdcb1734907f16a1e81142068834e9ecaeae1e86be8646385bc42d29db"
+      sha256 "938a04023083ee85e48bc6f2131b868ab4d904901099c9ee7796bde9aeb20dc0"
     elsif Hardware::CPU.arm?
       url "#{STORE_API_URL}/bundler-cli-repository/homebrew/#{ENV['HOMEBREW_SYNKBRIDGE_STORE_KEY']}/sb/0.9.21/arm64", using: BundlerCLIDownloadStrategy
-      sha256 "cd6f6af8cc6df43cad72018a5890dfee2bb2d08a037aac783c102918594cca0f"
+      sha256 "e76d5f7ad117361d5968e89e4e9dbe69c4a5f6123082344bb41f19292e75a361"
     end
   end
 
