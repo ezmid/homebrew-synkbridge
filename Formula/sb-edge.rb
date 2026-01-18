@@ -11,14 +11,14 @@ end
 class SbEdge < Formula
   desc "SynkBridge CLI"
   homepage "https://www.synkbridge.com/"
-  version "564"
+  version "573"
   on_macos do
     STORE_API_URL = ENV['HOMEBREW_SYNKBRIDGE_STORE_API_URL'] || "https://api.store.synkbridge.com/v1"
     if Hardware::CPU.intel?
-      url "#{STORE_API_URL}/bundler-cli-repository/homebrew/#{ENV['HOMEBREW_SYNKBRIDGE_STORE_KEY']}/sb-edge/564/amd64", using: BundlerCLIDownloadStrategy
+      url "#{STORE_API_URL}/bundler-cli-repository/homebrew/#{ENV['HOMEBREW_SYNKBRIDGE_STORE_KEY']}/sb-edge/573/amd64", using: BundlerCLIDownloadStrategy
       sha256 ""
     elsif Hardware::CPU.arm?
-      url "#{STORE_API_URL}/bundler-cli-repository/homebrew/#{ENV['HOMEBREW_SYNKBRIDGE_STORE_KEY']}/sb-edge/564/arm64", using: BundlerCLIDownloadStrategy
+      url "#{STORE_API_URL}/bundler-cli-repository/homebrew/#{ENV['HOMEBREW_SYNKBRIDGE_STORE_KEY']}/sb-edge/573/arm64", using: BundlerCLIDownloadStrategy
       sha256 ""
     end
   end
