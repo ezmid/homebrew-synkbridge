@@ -23,11 +23,11 @@ class BundlerCLIDownloadStrategy < CurlDownloadStrategy
 end
 
 class SbAT0912 < Formula
-  desc "Ezmid Synkbridge Bundler CLI"
+  desc "SynkBridge CLI"
   homepage "https://www.synkbridge.com/"
   version "0.9.12"
   on_macos do
-    STORE_API_URL = ENV['HOMEBREW_SYNKBRIDGE_STORE_API_URL'] || "https://api.store.synkbridge.com"
+    STORE_API_URL = ENV['HOMEBREW_SYNKBRIDGE_STORE_API_URL'] || "https://api.store.synkbridge.com/v1"
     if Hardware::CPU.intel?
       url "#{STORE_API_URL}/bundler-cli-repository/homebrew/HOMEBREW_SYNKBRIDGE_STORE_KEY/sb/0.9.12/amd64", using: BundlerCLIDownloadStrategy
       sha256 "b9421c22eb4db7dae7110f2b7ebc00550e8404f2d427fdd7ace8721ddcabaf87"

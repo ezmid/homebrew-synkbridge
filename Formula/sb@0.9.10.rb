@@ -1,19 +1,38 @@
 
+class BundlerCLIDownloadStrategy < CurlDownloadStrategy
+  # Homebrew 6 replaces secret-looking environment variables with a deferred
+  # placeholder while a formula is evaluated, and only Homebrew's own download
+  # strategies may expand one, and only inside request headers. Interpolating the
+  # token into `url` therefore produced a literal
+  # "{{HOMEBREW_DEFERRED_ENV:HOMEBREW_SYNKBRIDGE_STORE_KEY}}" and every install failed
+  # with "bad URI (is not URI?)".
+  #
+  # So the token is not interpolated at evaluation time at all. The formula ships a
+  # literal placeholder segment, which keeps the URL parseable, and it is swapped for
+  # the real value here. `url` rather than `fetch`, because the URI is parsed while
+  # computing the cache path, long before fetch runs.
+  def url
+    @resolved_store_url ||= begin
+      key = ENV.fetch("HOMEBREW_SYNKBRIDGE_STORE_KEY", nil)
+      if key.nil? || key.empty?
+        odie "HOMEBREW_SYNKBRIDGE_STORE_KEY environment variable is required for installation. Please define it in your environment"
+      end
+      super.sub("/homebrew/HOMEBREW_SYNKBRIDGE_STORE_KEY/", "/homebrew/#{key}/")
+    end
+  end
+end
+
 class SbAT0910 < Formula
-  desc "Ezmid Synkbridge Bundler CLI"
-  homepage "https://www.synkbridge.com/"  # Your app's homepage
+  desc "SynkBridge CLI"
+  homepage "https://www.synkbridge.com/"
   version "0.9.10"
   on_macos do
-    if ENV['HOMEBREW_SYNKBRIDGE_STORE_KEY'].nil?
-      odie "HOMEBREW_SYNKBRIDGE_STORE_KEY environment variable is required for installation. Please define it in your environment"
-    end
-    DEFAULT_STORE_API_URL = "https://api.store.synkbridge.com"
-    STORE_API_URL = ENV['HOMEBREW_SYNKBRIDGE_STORE_API_URL'] || DEFAULT_STORE_API_URL
+    STORE_API_URL = ENV['HOMEBREW_SYNKBRIDGE_STORE_API_URL'] || "https://api.store.synkbridge.com/v1"
     if Hardware::CPU.intel?
-      url "#{STORE_API_URL}/bundler-cli-repository/homebrew/#{ENV['HOMEBREW_SYNKBRIDGE_STORE_KEY']}/sb/0.9.10/amd64"
+      url "#{STORE_API_URL}/bundler-cli-repository/homebrew/HOMEBREW_SYNKBRIDGE_STORE_KEY/sb/0.9.10/amd64", using: BundlerCLIDownloadStrategy
       sha256 "ff676ad798d5cbc857f6b2dc4807c5882a3fc84d2c174f38879806f598e51ee1"
     elsif Hardware::CPU.arm?
-      url "#{STORE_API_URL}/bundler-cli-repository/homebrew/#{ENV['HOMEBREW_SYNKBRIDGE_STORE_KEY']}/sb/0.9.10/arm64"
+      url "#{STORE_API_URL}/bundler-cli-repository/homebrew/HOMEBREW_SYNKBRIDGE_STORE_KEY/sb/0.9.10/arm64", using: BundlerCLIDownloadStrategy
       sha256 "9be1e80fe3dd7419f72cf80031744fbc59e96b0537143858e660d253207a34b5"
     end
   end
