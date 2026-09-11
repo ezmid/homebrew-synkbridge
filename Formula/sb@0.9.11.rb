@@ -1,5 +1,5 @@
 
-class Sb < Formula
+class SbAT0911 < Formula
   desc "Ezmid Synkbridge Bundler CLI"
   homepage "https://www.synkbridge.com/"  # Your app's homepage
   version "0.9.11"
